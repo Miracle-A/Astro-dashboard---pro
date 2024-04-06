@@ -68,3 +68,113 @@
   border: 1px solid #fff;
   color: #fff;
 }
+
+nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.home-link {
+  background: #1d1f1d;
+  padding: 10px 15px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+nav a {
+  display: block;
+  color: white;
+  padding: 10px;
+  margin: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.character-detail-container {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  max-width: 800px;
+  margin: auto;
+}
+
+.character-detail-container h1,
+.character-detail-container p,
+.character-detail-container ul {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.character-detail-container a {
+  color: #9dc6e0;
+  text-decoration: underline;
+}
+
+.content-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.list-container {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.chart-container {
+  flex: 1;
+  height: 300px;
+}
+
+.character-list {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.character-item {
+  margin-bottom: 5px;
+}
+
+.character-list a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.character-list a:hover {
+  text-decoration: underline;
+}
+
+.controls-container {
+  margin: 20px 0;
+}
+
+.data-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.list-container,
+.chart-container {
+  flex: 1;
+  margin: 10px;
+  height: 500px;
+}
+.custom-tooltip {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  padding: 10px;
+  border-radius: 5px;
+  color: black;
+}
+
+.custom-tooltip .label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}

@@ -3,6 +3,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import md5 from "js-md5";
 import "./App.css";
+import { Link } from "react-router-dom";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const Dashboard = () => {
   const [characters, setCharacters] = useState([]);
@@ -10,6 +19,7 @@ const Dashboard = () => {
   const [filteredCharacters, setFilteredCharacters] = useState([]);
   const [minComics, setMinComics] = useState(0);
   const [minSeries, setMinSeries] = useState(0);
+  const [selectedChart, setSelectedChart] = useState("comics");
 
   useEffect(() => {
     fetchCharacters(searchInput);
@@ -24,10 +34,36 @@ const Dashboard = () => {
     setFilteredCharacters(filtered);
   }, [characters, minComics, minSeries]);
 
+  const chartData = filteredCharacters.map((character) => ({
+    name: character.name,
+    comics: character.comics.available,
+    series: character.series.available,
+  }));
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "#fff",
+            padding: "5px",
+            border: "1px solid #999",
+            borderRadius: "5px",
+          }}
+        >
+          <p className="label">{`Character: ${label}`}</p>
+          <p className="intro">{`${payload[0].name}: ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   const fetchCharacters = async (searchQuery) => {
     const timeStamp = new Date().getTime();
-    const publicKey = "756a3b8303dc5198d1a65ba2d29f8425"; // Replace with your actual public API key
-    const privateKey = "18d69adbfad63e8efdfc688e3707a6b32cdd92e8"; // Replace with your actual private API key
+    const publicKey = "756a3b8303dc5198d1a65ba2d29f8425";
+    const privateKey = "18d69adbfad63e8efdfc688e3707a6b32cdd92e8";
     const hash = md5(timeStamp + privateKey + publicKey);
 
     let params = {
@@ -125,18 +161,46 @@ const Dashboard = () => {
         <p>Median Series: {medianSeries}</p>
       </div>
 
-      <ul className="character-list">
-        {filteredCharacters.length > 0 ? (
-          filteredCharacters.map((character) => (
-            <li key={character.id} className="character-item">
-              <h3>{character.name}</h3>
-              <p>{character.description || "Description not available."}</p>
-            </li>
-          ))
-        ) : (
-          <p>No characters found.</p>
-        )}
-      </ul>
+      <div className="content-container">
+        <div className="list-container">
+          {/* Character list */}
+          <ul className="character-list">
+            {filteredCharacters.map((character) => (
+              <li key={character.id} className="character-item">
+                <Link to={`/character/${character.id}`}>{character.name}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="controls-container">
+          <label>Select chart type: </label>
+          <select
+            value={selectedChart}
+            onChange={(e) => setSelectedChart(e.target.value)}
+          >
+            <option value="comics">Comics</option>
+            <option value="series">Series</option>
+          </select>
+        </div>
+
+        <div
+          className="chart-container"
+          style={{ width: "500%", height: "500px" }}
+        >
+          <ResponsiveContainer width="250%" height={600}>
+            <BarChart
+              data={chartData}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            >
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey={selectedChart} fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   );
 };
